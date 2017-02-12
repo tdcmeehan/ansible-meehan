@@ -1,0 +1,10 @@
+[primary]
+raspberry1
+
+[secondary]
+raspberry2
+
+[pis:children]
+primary
+# secondary
+

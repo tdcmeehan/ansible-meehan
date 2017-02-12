@@ -1,0 +1,13 @@
+---
+- src: https://github.com/tdcmeehan/rpi-bootstrap.git
+  name: "rpi_bootstrap"
+
+- src: https://github.com/weareinteractive/ansible-ufw.git
+  name: "ansible-ufw"
+  version: "1.6.0"
+
+- src: https://github.com/angstwad/docker.ubuntu.git
+  version: "v2.2"
+  name: "docker.ubuntu"
+
+
