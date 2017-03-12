@@ -1,0 +1,18 @@
+[Unit]
+Description=Home assistant
+After=postgres.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+Restart={{ home_assistant_restart }}
+Type=simple
+User=hass
+ExecStartPre=/usr/bin/git -C /home/hass/.homeassistant pull origin master
+ExecStart=/usr/bin/docker run --name hass --device=/dev/zwavestick --net=host -v /home/hass/.homeassistant:/config -v /home/hass/.scripts:/custom_scripts -v /etc/letsencrypt:/etc/letsencrypt tdcmeehan/rpi-home-assistant:latest
+ExecStop=/usr/bin/docker stop -t 2 hass
+ExecStopPost=/usr/bin/docker rm -f hass
+
+[Install]
+WantedBy=multi-user.target
+

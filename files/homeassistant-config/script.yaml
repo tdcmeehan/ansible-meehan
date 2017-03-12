@@ -1,0 +1,120 @@
+arriving_home:
+  sequence:
+    - service: homeassistant.turn_on
+      entity_id: script.coming_home
+
+coming_home:
+  sequence:
+    - service: alarm_control_panel.alarm_disarm
+      entity_id: alarm_control_panel.simplisafe
+      data:
+        code: !secret simplisafe_code
+    - service: shell_command.disarm_blink
+    - condition: state
+      entity_id: sun.sun
+      state: 'below_horizon' 
+    - service: homeassistant.turn_on
+      entity_id: scene.arrive_home
+ 
+leaving_home:
+  sequence:
+    - service: alarm_control_panel.alarm_arm_away
+      entity_id : alarm_control_panel.simplisafe
+    - service: homeassistant.turn_on
+      entity_id: script.goodbye
+
+leaving:
+  sequence:
+    - service: homeassistant.turn_on
+      entity_id: script.leaving_home
+
+goodbye:
+  sequence:
+    - service: homeassistant.turn_off
+      entity_id: group.all_switches_and_lights
+    - service: shell_command.arm_blink
+    - condition: and
+      conditions:
+        - condition: state
+          entity_id: group.family
+          state: 'not_home'
+          for: 
+            minutes: 30
+        - condition: state
+          entity_id: alarm_control_panel.simplisafe
+          state: 'disarmed'
+    - service: notify.pushbullet
+      data: 
+        message: "Alarm is still disarmed!"
+        data:
+          url: https://doremus.timdmeehan.com/states/group.home_status
+        target:
+          - !secret tim_pushbullet
+          - !secret diana_pushbullet
+
+awake:
+  sequence:
+    - service: homeassistant.turn_on
+      entity_id: script.waking_up
+
+waking_up:
+  sequence:
+    - service: alarm_control_panel.alarm_disarm
+      entity_id : alarm_control_panel.simplisafe
+    - service: homeassistant.turn_on
+      entity_id: script.wake_up
+
+wake_up:
+  sequence:
+    - service: homeassistant.turn_on
+      entity_id: scene.wake_up
+    - service: shell_command.disarm_blink
+
+going_to_bed:
+  sequence:
+    - service: homeassistant.turn_on
+      entity_id: script.going_to_sleep
+
+going_to_sleep:
+  sequence:
+    - service: alarm_control_panel.alarm_arm_home
+      entity_id : alarm_control_panel.simplisafe
+    - service: homeassistant.turn_on
+      entity_id: script.good_night
+
+good_night:
+  sequence:
+    - service: homeassistant.turn_off
+      entity_id: group.downstairs_lights
+    - service: shell_command.arm_blink
+
+alarm_state_change:
+  sequence:
+    - condition: template
+      value_template: >
+        {% if is_state('alarm_control_panel.simplisafe', 'unknown') %}
+          false
+        {% else %}
+          true
+        {% endif %}
+    - service: notify.pushbullet
+      data_template:
+        message: "Alarm is now {{ states('alarm_control_panel.simplisafe') }}"
+        data:
+          url: https://doremus.timdmeehan.com/states/group.home_status
+        target:
+          - !secret tim_pushbullet
+    - condition: or
+      conditions:
+        - condition: time
+          after: '06:50:00'
+        - condition: time
+          before: '06:00:00'
+    - service: notify.pushbullet
+      data_template:
+        message: "Alarm is now {{ states('alarm_control_panel.simplisafe') }}"
+        data:
+          url: https://doremus.timdmeehan.com/states/group.home_status
+        target:
+          - !secret diana_pushbullet
+

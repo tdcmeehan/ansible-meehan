@@ -1,0 +1,20 @@
+[Unit]
+Description=Postgres
+After=network.target
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+Restart={{ postgres_restart }}
+Type=simple
+User=postgres-hass
+Environment="PGPASSWORD={{ postgres_password }}"
+ExecStartPre=/usr/bin/docker pull randyp/rpi-postgres:latest
+ExecStart=/usr/bin/docker run --name postgres -p 5432:5432 -e "POSTGRES_PASSWORD=${PGPASSWORD}" randyp/rpi-postgres 
+ExecStartPost=/bin/sleep 10
+ExecStartPost=/usr/bin/createdb -U postgres --host localhost hass
+ExecStop=/usr/bin/docker stop -t 2 postgres
+ExecStopPost=/usr/bin/docker rm -f postgres
+
+[Install]
+WantedBy=multi-user.target

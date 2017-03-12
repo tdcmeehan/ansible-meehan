@@ -1,0 +1,18 @@
+---
+
+home_assistant_state: stopped
+home_assistant_enabled: false
+home_assistant_restart: no
+
+postgres_state: stopped
+postgres_enabled: false
+postgres_restart: no
+
+homebridge_state: stopped
+homebridge_enabled: false
+homebridge_restart: no
+
+mosca_state: stopped
+mosca_enabled: false
+mosca_restart: no
+

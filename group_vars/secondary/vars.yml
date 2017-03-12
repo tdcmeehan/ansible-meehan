@@ -1,0 +1,18 @@
+---
+
+home_assistant_state: restarted
+home_assistant_enabled: true
+home_assistant_restart: always
+
+postgres_state: started
+postgres_enabled: true
+postgres_restart: always
+
+homebridge_state: restarted
+homebridge_enabled: true
+homebridge_restart: on-failure
+
+mosca_state: restarted
+mosca_enabled: true
+mosca_restart: always
+

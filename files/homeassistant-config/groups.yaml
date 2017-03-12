@@ -1,0 +1,122 @@
+default_view:
+  view: yes
+  entities:
+  - group.alarm
+  - group.thermostat
+  - group.all_switches_and_lights
+
+family:
+  entities:
+    - device_tracker.user_timsiphone
+    - device_tracker.timothynsiphonehome_bt
+    - device_tracker.timothynspebblehome_bt
+    - device_tracker.user_dianasiphone
+    - device_tracker.iphonehome_bt
+
+
+tim:
+  name: Tim
+  entities:
+    - device_tracker.user_timsiphone
+    - device_tracker.timothynsiphonehome_bt
+    - device_tracker.timothynspebblehome_bt
+
+
+diana:
+  name: Diana
+  entities:
+    - device_tracker.user_dianasiphone
+    - device_tracker.iphonehome_bt
+
+
+sensors:
+  entities:
+    - binary_sensor.bedroom_occupancy
+    - binary_sensor.downstairs_ecobee_occupancy
+
+alarm:
+  entities:
+    - alarm_control_panel.simplisafe
+
+thermostat:
+  entities:
+    - climate.downstairs_ecobee
+    - sensor.bedroom_temperature
+    - sensor.downstairs_ecobee_humidity
+    - sensor.downstairs_ecobee_temperature
+
+all_switches_and_lights:
+  name: All Lights
+  entities:
+    - group.all_lights
+    - group.all_switches
+
+downstairs_lights:
+  name: Downstairs Lights
+  entities:
+    - group.living_room_lights
+    - group.kitchen_lights
+
+Rooms:
+  view: yes
+  icon: mdi:home
+  entities:
+    - group.living_room
+    - group.dining_room
+    - group.kitchen
+    - group.master_bedroom
+
+Living Room:
+  entities:
+    - media_player.roku_632646101435
+    - light.living_room_level_3_0
+
+Living Room Lights:
+  view: no 
+  entities:
+    - light.living_room_level_3_0
+
+Dining Room:
+  entities:
+    - climate.downstairs_ecobee
+    - binary_sensor.downstairs_ecobee_occupancy
+    - sensor.downstairs_ecobee_humidity
+    - sensor.downstairs_ecobee_temperature
+
+Master Bedroom:
+  entities:
+    - binary_sensor.bedroom_occupancy
+    - sensor.bedroom_temperature 
+    - switch.dianas_lamp_switch_6_0
+    - switch.tims_lamp_switch_7_0
+
+Master Bedroom Lights:
+  view: no 
+  entities:
+    - switch.dianas_lamp_switch_6_0
+    - switch.tims_lamp_switch_7_0
+
+Kitchen:
+  entities:
+    - light.kitchen_counter_level_4_0
+    - switch.kitchen_switch_5_0
+
+Kitchen Lights:
+  view: no 
+  entities:
+    - light.kitchen_counter_level_4_0
+    - switch.kitchen_switch_5_0
+
+Home Status:
+  view: yes
+  icon: mdi:security
+  entities:
+    - group.family
+    - group.sensors
+    - group.alarm
+
+HVAC:
+  view: yes
+  icon: mdi:temperature-fahrenheit
+  entities: group.thermostat
+

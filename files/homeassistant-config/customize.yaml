@@ -1,0 +1,17 @@
+light.living_room_level_3_0:
+  friendly_name: Living Room
+light.kitchen_counter_level_4_0:
+  friendly_name: Kitchen Counter
+switch.kitchen_switch_5_0:
+  friendly_name: Kitchen
+switch.dianas_lamp_switch_6_0:
+  friendly_name: Diana's Lamp
+switch.tims_lamp_switch_7_0:
+  friendly_name: Tim's Lamp
+binary_sensor.hub_hub:
+  hidden: true
+media_player.roku_632646101435:
+  friendly_name: Roku
+group.all_lights:
+  emulated_hue_name: "just the lights"
+

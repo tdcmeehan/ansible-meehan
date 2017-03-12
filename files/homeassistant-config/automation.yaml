@@ -1,0 +1,91 @@
+- alias: 'Waking up'
+  condition:
+    condition: state
+    entity_id: sun.sun
+    state: 'below_horizon'
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.simplisafe
+      from: 'armed_home'
+      to: 'disarmed'
+  action:
+     service: homeassistant.turn_on
+     entity_id: script.wake_up
+
+- alias: 'Leaving home (Armed)'
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.simplisafe
+      to: 'armed_away'
+  action:
+     service: homeassistant.turn_on
+     entity_id: script.goodbye
+
+- alias: 'Leaving home (Away)'
+  trigger:
+    - platform: state
+      entity_id: group.family
+      from: 'home'
+      to: 'not_home'
+      for:
+        minutes: 30
+  action:
+     service: homeassistant.turn_on
+     entity_id: script.goodbye
+
+- alias: 'Arriving home (Alarm)'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: sun.sun 
+        state: 'below_horizon'
+      - condition: state
+        entity_id: group.family
+        state: 'not_home'
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.simplisafe
+      from: 'armed_away'
+      to: 'disarmed'
+  action:
+     service: homeassistant.turn_on
+     entity_id: script.coming_home
+
+- alias: 'Arriving home (Presence)'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: sun.sun
+        state: 'below_horizon'
+      - condition: state
+        entity_id: alarm_control_panel.simplisafe
+        state: 'armed_away'
+  trigger:
+    - platform: state
+      entity_id: group.family
+      from: 'not_home'
+      to: 'home'
+  action:
+     service: homeassistant.turn_on
+     entity_id: script.coming_home
+
+- alias: 'Going to sleep'
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.simplisafe
+      to: 'armed_home'
+  action:
+     service: homeassistant.turn_on
+     entity_id: script.goodnight
+
+- alias: 'Alarm state change'
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.simplisafe
+  action:
+    service: homeassistant.turn_on
+    entity_id: script.alarm_state_change
+
+

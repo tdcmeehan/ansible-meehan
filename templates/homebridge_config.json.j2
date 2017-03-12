@@ -1,0 +1,26 @@
+{
+"bridge": {
+  "username": "{{ homebridge_username }}",
+  "port": 51826,
+  "pin": "{{ homebridge_pin }}"
+},
+"platforms": [
+  {
+    "platform": "HomeAssistant",
+    "name": "HomeAssistant",
+    "host": "https://{{ ansible_eth0.ipv4.address }}:8123",
+    "password": "{{ home_assistant_password }}",
+    "supported_types": ["binary_sensor", "cover", "fan", "input_boolean", "light", "lock", "media_player", "scene", "sensor", "switch"]
+  }
+],
+    "accessories": [
+        {
+            "accessory": "Homebridge-SimpliSafe",
+            "name": "Alarm System",
+            "auth": {
+                "username": "{{ simplisafe_username }}",
+                "password": "{{ simplisafe_password }}"
+            }
+        }
+    ]
+}

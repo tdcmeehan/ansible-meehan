@@ -10,4 +10,6 @@
   version: "v2.2"
   name: "docker.ubuntu"
 
+- src: https://github.com/kiview/ansible-role-docker-service-deploy.git
+  name: "docker-service-deploy"
 

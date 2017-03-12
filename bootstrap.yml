@@ -6,3 +6,55 @@
     - ansible-ufw
     - docker.ubuntu
 
+  tasks:
+    - copy:
+        src: files/homeassistant-config/
+        dest: /home/hass/.homeassistant
+        owner: hass
+    - template:
+        src: templates/home-assistant@hass.service.j2
+        dest: "/etc/systemd/system/home-assistant@hass.service"
+    - systemd:
+        name: home-assistant@hass.service
+        state: "{{ home_assistant_state }}"
+        enabled: "{{ home_assistant_enabled }}"
+        daemon_reload: yes
+
+    - template:
+        src: templates/postgres.service.j2
+        dest: "/etc/systemd/system/postgres.service"
+    - systemd:
+        name: postgres.service
+        state: "{{ postgres_state }}"
+        enabled: "{{ postgres_enabled }}"
+        daemon_reload: yes
+   
+    - copy:
+        src: files/homebridge_defaults
+        dest: /etc/default/homebridge
+    - name: Ensures /var/homebridge dir exists
+      file: >
+        path=/var/homebridge
+        state=directory 
+    - template:
+        src: templates/homebridge_config.json.j2
+        dest: /var/homebridge/config.json
+    - template:
+        src: templates/homebridge.service.j2
+        dest: /etc/systemd/system/homebridge.service
+    - systemd:
+        name: homebridge.service
+        state: "{{ homebridge_state }}"
+        enabled: "{{ homebridge_enabled }}"
+        daemon_reload: yes
+
+    - template:
+        src: templates/mosca.service.j2
+        dest: "/etc/systemd/system/mosca.service"
+    - systemd:
+        name: mosca.service
+        state: "{{ mosca_state }}"
+        enabled: "{{ mosca_enabled }}"
+        daemon_reload: yes
+
+

@@ -1,0 +1,19 @@
+- name: Wake up
+  entities:
+    light.living_room_level_3_0:
+      state: on
+      brightness: 50
+    light.kitchen_counter_level_4_0:
+      state: on
+      brightness: 50
+
+- name: Arrive home
+  entities:
+    light.living_room_level_3_0:
+      state: on
+      brightness: 200
+    light.kitchen_counter_level_4_0:
+      state: on
+      brightness: 200
+    switch.kitchen_switch_5_0:
+      state: on

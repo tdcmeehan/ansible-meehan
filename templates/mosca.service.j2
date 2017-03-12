@@ -1,0 +1,17 @@
+[Unit]
+Description=Mosca
+After=network.target
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+Restart={{ mosca_restart }}
+Type=simple
+User=mosca
+ExecStart=/usr/bin/docker run --name mosca -p 8883:8883 -p 1883:1883 -v /var/db/mosca:/db -v {{ fullchain_loc }}:/certs/cert -v {{ privkey_loc }}:/certs/key mosca:dev
+ExecStop=/usr/bin/docker stop -t 2 mosca
+ExecStopPost=/usr/bin/docker rm -f mosca
+
+[Install]
+WantedBy=multi-user.target
+
