@@ -1,8 +1,4 @@
 - alias: 'Waking up'
-  condition:
-    condition: state
-    entity_id: sun.sun
-    state: 'below_horizon'
   trigger:
     - platform: state
       entity_id: alarm_control_panel.simplisafe
@@ -38,9 +34,6 @@
     condition: and
     conditions:
       - condition: state
-        entity_id: sun.sun 
-        state: 'below_horizon'
-      - condition: state
         entity_id: group.family
         state: 'not_home'
   trigger:
@@ -56,9 +49,6 @@
   condition:
     condition: and
     conditions:
-      - condition: state
-        entity_id: sun.sun
-        state: 'below_horizon'
       - condition: state
         entity_id: alarm_control_panel.simplisafe
         state: 'armed_away'

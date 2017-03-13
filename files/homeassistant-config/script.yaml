@@ -66,9 +66,12 @@ waking_up:
 
 wake_up:
   sequence:
+    - service: shell_command.disarm_blink
+    - condition: state
+      entity_id: sun.sun
+      state: 'below_horizon'
     - service: homeassistant.turn_on
       entity_id: scene.wake_up
-    - service: shell_command.disarm_blink
 
 going_to_bed:
   sequence:
