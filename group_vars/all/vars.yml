@@ -30,4 +30,5 @@ dbs_users:
   - { name: 'postgres-hass', groups: docker }
   - { name: 'homebridge', groups: docker }
   - { name: 'mosca', groups: docker }
+  - { name: 'duckdns' }
 

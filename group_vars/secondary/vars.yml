@@ -16,3 +16,5 @@ mosca_state: restarted
 mosca_enabled: true
 mosca_restart: always
 
+duckdns_disabled: false
+

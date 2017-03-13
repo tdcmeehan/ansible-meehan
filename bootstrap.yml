@@ -7,51 +7,76 @@
     - docker.ubuntu
 
   tasks:
-    - copy:
+    - name: Ensure duckdns command exists
+      copy:
+        src: files/duck.sh
+        dest: /home/duckdns/duck.sh
+        owner: duckdns
+        mode: 0700
+    - name: Duckdns cron
+      cron:
+        name: "check dirs"
+        minute: "*/5"
+        job: "~/duck.sh >/dev/null 2>&1"
+        user: duckdns
+        disabled: "{{ duckdns_disabled }}"
+
+    - name: Home assistant configuration
+      copy:
         src: files/homeassistant-config/
         dest: /home/hass/.homeassistant
         owner: hass
-    - template:
+    - name: Home assistant systemd
+      template:
         src: templates/home-assistant@hass.service.j2
         dest: "/etc/systemd/system/home-assistant@hass.service"
-    - systemd:
+    - name: Home assistant systemd run
+      systemd:
         name: home-assistant@hass.service
         state: "{{ home_assistant_state }}"
         enabled: "{{ home_assistant_enabled }}"
         daemon_reload: yes
 
-    - template:
+    - name: Postgres systemd
+      template:
         src: templates/postgres.service.j2
         dest: "/etc/systemd/system/postgres.service"
-    - systemd:
+    - name: Postgres systemd run
+      systemd:
         name: postgres.service
         state: "{{ postgres_state }}"
         enabled: "{{ postgres_enabled }}"
         daemon_reload: yes
    
-    - copy:
+    - name: Homebridge defaults
+      copy:
         src: files/homebridge_defaults
         dest: /etc/default/homebridge
     - name: Ensures /var/homebridge dir exists
       file: >
         path=/var/homebridge
         state=directory 
-    - template:
+    - name: Homebridge config
+      template:
         src: templates/homebridge_config.json.j2
         dest: /var/homebridge/config.json
-    - template:
+    - name: Homebridge systemd
+      template:
         src: templates/homebridge.service.j2
         dest: /etc/systemd/system/homebridge.service
-    - systemd:
+    - name: Homebridge systemd run
+      systemd:
         name: homebridge.service
         state: "{{ homebridge_state }}"
         enabled: "{{ homebridge_enabled }}"
         daemon_reload: yes
 
-    - template:
+    - name: Mosca systemd
+      template:
         src: templates/mosca.service.j2
         dest: "/etc/systemd/system/mosca.service"
-    - systemd:
+    - name: Mosca systemd run
+      systemd:
         name: mosca.service
         state: "{{ mosca_state }}"
         enabled: "{{ mosca_enabled }}"
